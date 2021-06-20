@@ -13,8 +13,7 @@ router.delete("/", deleteEvent);
 router.put("/:eventId", updateEvent);
 router.post("/", addEvent);
 router.get("/", getList);
-
+router.get("/fullybooked", getFullyBooked);
 router.get("/:eventId", getEventDetail);
-// router.get("/fullybooked", getFullyBooked);
 
 module.exports = router;

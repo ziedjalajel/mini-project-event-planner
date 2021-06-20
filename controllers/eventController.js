@@ -13,10 +13,12 @@ exports.getList = async (req, res) => {
           },
         },
         attributes: ["id", "name", "image"],
+        order: [["startDate"], ["name"]],
       });
     } else {
       weddings = await Wedding.findAll({
         attributes: ["id", "name", "image"],
+        order: [["startDate"], ["name"]],
       });
     }
 
@@ -73,10 +75,17 @@ exports.getEventDetail = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// exports.getFullyBooked = async (req, res) => {
-//   try {
-//     const foundList = await Wedding.findAll({
-//       where: {},
-//     });
-//   } catch (error) {}
-// };
+exports.getFullyBooked = async (req, res) => {
+  try {
+    const foundList = await Wedding.findAll({
+      where: {
+        numOfSeats: {
+          [Op.eq]: sequelize.col("bookedSeats"),
+        },
+      },
+    });
+    res.status(201).json(foundList);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
