@@ -1,10 +1,24 @@
 const { Wedding } = require("../db/models");
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 
 exports.getList = async (req, res) => {
   try {
-    const weddings = await Wedding.findAll({
-      attributes: ["id", "name", "image"],
-    });
+    let weddings;
+    if (req.body.date) {
+      weddings = await Wedding.findAll({
+        where: {
+          startDate: {
+            [Op.gt]: req.body.date,
+          },
+        },
+        attributes: ["id", "name", "image"],
+      });
+    } else {
+      weddings = await Wedding.findAll({
+        attributes: ["id", "name", "image"],
+      });
+    }
 
     res.json(weddings);
   } catch (error) {
