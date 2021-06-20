@@ -89,3 +89,15 @@ exports.getFullyBooked = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+exports.searchList = async (req, res) => {
+  try {
+    const events = await Wedding.findAll({
+      where: {
+        name: { [Op.iLike]: req.params.query },
+      },
+    });
+    res.json(events);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};

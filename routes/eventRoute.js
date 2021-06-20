@@ -6,11 +6,13 @@ const {
   deleteEvent,
   getEventDetail,
   getFullyBooked,
+  searchList,
 } = require("../controllers/eventController");
 const router = express.Router();
 
 router.delete("/", deleteEvent);
 router.put("/:eventId", updateEvent);
+router.get("/:query", searchList);
 router.post("/", addEvent);
 router.get("/", getList);
 router.get("/fullybooked", getFullyBooked);
