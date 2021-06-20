@@ -1,37 +1,42 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define("Wedding", {
     organizer: {
-      type: DataTypes.STRING,
+      //done
+      type: DataTypes.STRING(20),
       unique: true,
-      validate: {
-        len: [0, 20],
-      },
     },
     name: {
+      //done
       type: DataTypes.STRING,
       validate: {
         not: ["^event+$", "i"],
       },
     },
     email: {
+      //done
       type: DataTypes.STRING,
-      notEmpty: true,
-      isEmail: true,
+      validate: {
+        notEmpty: true,
+        isEmail: true,
+      },
     },
     image: {
+      //done
       type: DataTypes.STRING,
       allowNull: false,
     },
     numOfSeats: {
+      //done
       type: DataTypes.INTEGER,
       validate: { min: 0 },
     },
     bookedSeats: {
+      //done
       type: DataTypes.INTEGER,
       validate: {
         customValidator(value) {
-          if (value > numOfSeats) {
-            throw new Error("hiiii");
+          if (value > this.numOfSeats) {
+            throw new Error("Over booked seats");
           }
         },
       },
@@ -39,21 +44,23 @@ module.exports = (sequelize, DataTypes) => {
 
     startDate: {
       type: DataTypes.STRING,
-      isDate: true,
-      isAfter: "2021-06-21",
       validate: {
+        isDate: true,
+        isAfter: "2021-06-21",
         customValidator(value) {
-          if (value === endDate && !null) {
+          if (null === this.endDate && value !== null) {
             throw new Error("byee");
           }
         },
       },
     },
     endDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       validate: {
+        isDate: true,
+        isAfter: "2021-06-21",
         customValidator(value) {
-          if (value === startDate && !null) {
+          if (value !== null && this.startDate === null) {
             throw new Error("bbyee");
           }
         },
